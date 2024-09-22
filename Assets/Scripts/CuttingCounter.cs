@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter
@@ -8,10 +6,8 @@ public class CuttingCounter : BaseCounter
     {
         if (HasKitchenObject())
         {
-            Debug.Log("The clear counter already has a kitchen object!");
             if (player.HasKitchenObject())
             {
-                Debug.Log("The player already has a kitchen object.");
                 return;
             }
             GiveKitchenObjectToPlayer(player);

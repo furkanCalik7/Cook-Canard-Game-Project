@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ContainerCounter : BaseCounter, IKitchenObjectParent
 {
+    [SerializeField] private KitchenObjectsSO kitchenObjectsSO;
     public event EventHandler OnPlayerGrapAnItem;
     public override void Interact(PlayerMovement player)
     {

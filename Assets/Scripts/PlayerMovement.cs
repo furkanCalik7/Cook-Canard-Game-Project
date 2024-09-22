@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour, IKitchenObjectParent
 
     private void HandleInteractions()
     {
-        float interactionDistance = 6f;
+        float interactionDistance = 2f;
         bool isInteracted = Physics.Raycast(transform.position, lastInteractedDir, out RaycastHit hitInfo, interactionDistance, counterLayerMask);
 
         if (isInteracted)

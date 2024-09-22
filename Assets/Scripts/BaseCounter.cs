@@ -2,8 +2,6 @@ using UnityEngine;
 
 public abstract class BaseCounter : MonoBehaviour, IKitchenObjectParent
 {
-    [SerializeField] protected KitchenObjectsSO kitchenObjectsSO;
-
     [SerializeField] protected Transform counterTopPoint;
     protected KitchenObject kitchenObject;
     public abstract void Interact(PlayerMovement player);
