@@ -10,7 +10,7 @@ public class KitchenObject : MonoBehaviour
     public KitchenObjectsSO GetKitchenObjectsSO()
     {
         return kitchenObjectsSO;
-        }
+    }
 
     public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent)
     {
@@ -26,5 +26,10 @@ public class KitchenObject : MonoBehaviour
     public IKitchenObjectParent GetKitchenObjectParent()
     {
         return kitchenObjectParent;
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 }

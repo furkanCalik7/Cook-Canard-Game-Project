@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e4a1293096e8b45a202bbef73af5d6, type: 3}
   m_Name: UncookedMeatSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4516768566806480031, guid: d6b754a9a9b84c347a906eade306462e, type: 3}
-  sprite: {fileID: 21300000, guid: 91e8fe3de9249fc44b7bdd8050062896, type: 3}
-  objectName: Tomato
+  prefab: {fileID: 4516768566806480031, guid: 3cf5a163122231446a7db88f24719de4, type: 3}
+  sprite: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
+  objectName: UncookedMeat
+  cuttedPrefab: {fileID: 4516768566806480031, guid: 3cf5a163122231446a7db88f24719de4,
+    type: 3}

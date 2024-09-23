@@ -4,7 +4,10 @@ public abstract class BaseCounter : MonoBehaviour, IKitchenObjectParent
 {
     [SerializeField] protected Transform counterTopPoint;
     protected KitchenObject kitchenObject;
-    public abstract void Interact(PlayerMovement player);
+    public abstract void Interact(Player player);
+    public virtual void InteractAlternate(Player player) {
+        Debug.Log("BaseClass.InteractAlternate()");
+    }
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;

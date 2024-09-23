@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e4a1293096e8b45a202bbef73af5d6, type: 3}
   m_Name: LattuceSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4516768566806480031, guid: d6b754a9a9b84c347a906eade306462e, type: 3}
-  sprite: {fileID: 21300000, guid: 91e8fe3de9249fc44b7bdd8050062896, type: 3}
-  objectName: Tomato
+  prefab: {fileID: 4516768566806480031, guid: 2ecf9e8bb1c7ac546b238c1ced049f5d, type: 3}
+  sprite: {fileID: 21300000, guid: e1c23b5aded59d84da30738d3267a6c9, type: 3}
+  objectName: Lattuce
+  cuttedPrefab: {fileID: 4516768566806480031, guid: cf7980e10d91c5140aec47fc2d226d04,
+    type: 3}

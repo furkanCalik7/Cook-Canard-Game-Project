@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ClearCounter : BaseCounter, IKitchenObjectParent
 {
-    public override void Interact(PlayerMovement player)
+    public override void Interact(Player player)
     {
         if (HasKitchenObject())
         {

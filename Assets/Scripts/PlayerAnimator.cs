@@ -6,7 +6,7 @@ public class PlayerAnimator : MonoBehaviour
 {
     private const string IS_WALKING = "IsWalking";
     private Animator animator;
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Player playerMovement;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
