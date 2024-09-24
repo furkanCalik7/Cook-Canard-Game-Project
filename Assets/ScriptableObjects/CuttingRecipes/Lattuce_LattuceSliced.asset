@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62e2de2c9fcdb5459d3f09964ddf796, type: 3}
   m_Name: Lattuce_LattuceSliced
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 9f341bca564aabc4bbacceebcb40bbfb, type: 2}
-  output: {fileID: 11400000, guid: 88581c91fcda0fc40bd0769455198133, type: 2}
+  input: {fileID: 11400000, guid: 9e2976497da2b924b813dc0aebe7ac2b, type: 2}
+  output: {fileID: 11400000, guid: b6c60c01c2bea5d46bc8ce64da0d9d8a, type: 2}
+  requiredCuttingAction: 4

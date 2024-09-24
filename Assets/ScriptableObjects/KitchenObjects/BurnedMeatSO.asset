@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62e2de2c9fcdb5459d3f09964ddf796, type: 3}
-  m_Name: Cheese_CheeseSliced
+  m_Script: {fileID: 11500000, guid: c6e4a1293096e8b45a202bbef73af5d6, type: 3}
+  m_Name: BurnedMeatSO
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 57bec309201376341b3542afb8f97048, type: 2}
-  output: {fileID: 11400000, guid: c526239318982214395edca75f021b1a, type: 2}
-  requiredCuttingAction: 3
+  prefab: {fileID: 4516768566806480031, guid: 44007356a0b3c664c8d7bfd16c8b7d51, type: 3}
+  sprite: {fileID: 21300000, guid: 713ea9afa60dd6e4ebf6503a33e8cc99, type: 3}
+  objectName: BurnedMeat

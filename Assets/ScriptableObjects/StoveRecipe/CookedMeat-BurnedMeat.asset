@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62e2de2c9fcdb5459d3f09964ddf796, type: 3}
-  m_Name: Cheese_CheeseSliced
+  m_Script: {fileID: 11500000, guid: 4951e46fa314d434a8965a50c5c15efa, type: 3}
+  m_Name: CookedMeat-BurnedMeat
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: 57bec309201376341b3542afb8f97048, type: 2}
-  output: {fileID: 11400000, guid: c526239318982214395edca75f021b1a, type: 2}
-  requiredCuttingAction: 3
+  input: {fileID: 11400000, guid: 2197763989834194cad081474693ea66, type: 2}
+  output: {fileID: 11400000, guid: d5b95fb1495234c4ebc04b0913376490, type: 2}
+  requiredCookingTime: 4
