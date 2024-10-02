@@ -1,13 +1,10 @@
 using System;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter, IHasProgress
 {
-    public event EventHandler<OnCuttingActionPerformedEventArgs> OnCuttingActionPerformed;
-    public class OnCuttingActionPerformedEventArgs : EventArgs
-    {
-        public float normalizedCuttingProgress;
-    }
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOs;
     private int cuttingProgress;
     public override void Interact(Player player)
@@ -16,6 +13,14 @@ public class CuttingCounter : BaseCounter
         {
             if (player.HasKitchenObject())
             {
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredients(GetKitchenObject().GetKitchenObjectsSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+                    return;
+                }
                 return;
             }
             GiveKitchenObjectToPlayer(player);
@@ -35,9 +40,9 @@ public class CuttingCounter : BaseCounter
         GetKitchenObjectFromPlayer(player);
         CuttingRecipeSO cuttingRecipeSO = findCuttingRecipe(kitchenObject.GetKitchenObjectsSO());
         cuttingProgress = 0;
-        OnCuttingActionPerformed?.Invoke(this, new OnCuttingActionPerformedEventArgs
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
-            normalizedCuttingProgress = (float)cuttingProgress / cuttingRecipeSO.requiredCuttingAction
+            progressChanged = (float)cuttingProgress / cuttingRecipeSO.requiredCuttingAction
         });
     }
 
@@ -51,9 +56,9 @@ public class CuttingCounter : BaseCounter
         if (cuttingRecipeSO == null) return;
         cuttingProgress++;
 
-        OnCuttingActionPerformed?.Invoke(this, new OnCuttingActionPerformedEventArgs
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
-            normalizedCuttingProgress = (float)cuttingProgress / cuttingRecipeSO.requiredCuttingAction
+            progressChanged = (float)cuttingProgress / cuttingRecipeSO.requiredCuttingAction
         });
         if (cuttingProgress < cuttingRecipeSO.requiredCuttingAction)
         {
@@ -62,7 +67,7 @@ public class CuttingCounter : BaseCounter
         kitchenObject.DestroySelf();
 
         Transform cuttedKitchenObjectTransform = Instantiate(cuttingRecipeSO.output.prefab);
-        cuttedKitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this); 
+        cuttedKitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
     }
 
     private void GiveKitchenObjectToPlayer(IKitchenObjectParent kitchenObjectParent)

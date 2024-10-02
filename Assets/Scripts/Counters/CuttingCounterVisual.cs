@@ -11,12 +11,12 @@ public class CuttingCounterVisual : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        cuttingCounter.OnCuttingActionPerformed += ContainerCounter_OnCuttingActionPerformed;
+        cuttingCounter.OnProgressChanged += ContainerCounter_OnCuttingActionPerformed;
     }
 
-    private void ContainerCounter_OnCuttingActionPerformed(object sender, CuttingCounter.OnCuttingActionPerformedEventArgs e)
+    private void ContainerCounter_OnCuttingActionPerformed(object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
-        if (e.normalizedCuttingProgress <= 0) return;
+        if (e.progressChanged <= 0) return;
         animator.SetTrigger(CUT);
     }
 }

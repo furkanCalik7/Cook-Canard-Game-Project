@@ -1,8 +1,18 @@
+using System;
 using UnityEngine;
 
-public class StoveCounter : BaseCounter
+public class StoveCounter : BaseCounter, IHasProgress
 {
-    enum StoveState
+    public event EventHandler<OnStoveStateChangedEventArgs> OnStoveStateChanged;
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+
+    public class OnStoveStateChangedEventArgs : EventArgs
+    {
+        public StoveState currentState;
+    }
+
+
+    public enum StoveState
     {
         IDLE,
         COOKING,
@@ -15,6 +25,11 @@ public class StoveCounter : BaseCounter
     private void Start()
     {
         currentState = StoveState.IDLE;
+        OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+        {
+            currentState = currentState
+        });
+
     }
 
     private void Update()
@@ -26,17 +41,29 @@ public class StoveCounter : BaseCounter
         switch (currentState)
         {
             case StoveState.IDLE:
+                stovedProgress = 0f;
+
+
                 if (!isKitchenObjectStovable(kitchenObject.GetKitchenObjectsSO()))
                 {
                     return;
                 }
                 stovedProgress = 0f;
                 currentState = StoveState.COOKING;
+                OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+                {
+                    currentState = currentState
+                });
                 break;
             case StoveState.COOKING:
                 stovedProgress += Time.deltaTime;
+                float requiredCookingTime = findStoveRecipe(kitchenObject.GetKitchenObjectsSO()).requiredCookingTime;
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                {
+                    progressChanged = stovedProgress / requiredCookingTime
+                });
 
-                if (stovedProgress < findStoveRecipe(kitchenObject.GetKitchenObjectsSO()).requiredCookingTime) return;
+                if (stovedProgress < requiredCookingTime) return;
 
                 kitchenObject.DestroySelf();
 
@@ -44,6 +71,10 @@ public class StoveCounter : BaseCounter
                 stovedKitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
 
                 currentState = StoveState.COOKED;
+                OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+                {
+                    currentState = currentState
+                });
                 break;
             case StoveState.COOKED:
                 if (!isKitchenObjectStovable(kitchenObject.GetKitchenObjectsSO()))
@@ -52,9 +83,12 @@ public class StoveCounter : BaseCounter
                 }
                 stovedProgress = 0f;
                 currentState = StoveState.COOKING;
+                OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+                {
+                    currentState = currentState
+                });
                 break;
         }
-        Debug.Log(currentState);
     }
     public override void Interact(Player player)
     {
@@ -62,9 +96,35 @@ public class StoveCounter : BaseCounter
         {
             if (player.HasKitchenObject())
             {
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredients(GetKitchenObject().GetKitchenObjectsSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+                    currentState = StoveState.IDLE;
+                    OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+                    {
+                        currentState = currentState
+                    });
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
+                        progressChanged = stovedProgress
+                    });
+                    return;
+                }
                 return;
             }
             GiveKitchenObjectToPlayer(player);
+            currentState = StoveState.IDLE;
+            OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+            {
+                currentState = currentState
+            });
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressChanged = stovedProgress
+            });
             return;
         }
 
@@ -77,6 +137,15 @@ public class StoveCounter : BaseCounter
         {
             return;
         }
+        currentState = StoveState.IDLE;
+        OnStoveStateChanged?.Invoke(this, new OnStoveStateChangedEventArgs
+        {
+            currentState = currentState
+        });
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressChanged = stovedProgress
+        });
 
         GetKitchenObjectFromPlayer(player);
     }

@@ -6,12 +6,27 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
     {
         if (HasKitchenObject())
         {
-            Debug.Log("The clear counter already has a kitchen object!");
             if (player.HasKitchenObject())
             {
-                Debug.Log("The player already has a kitchen object.");
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredients(GetKitchenObject().GetKitchenObjectsSO()))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+                }
+                else if (GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredients(player.GetKitchenObject().GetKitchenObjectsSO()))
+                    {
+                        Debug.Log(player.GetKitchenObject());
+                        player.GetKitchenObject().DestroySelf();
+                    }
+                }
                 return;
             }
+
+
             GiveKitchenObjectToPlayer(player);
             return;
         }
