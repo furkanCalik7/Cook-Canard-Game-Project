@@ -8,6 +8,8 @@ public class DeliveryManager : MonoBehaviour
     public static DeliveryManager Instance { get; private set; }
     public event EventHandler OnOrderSpawned;
     public event EventHandler OnOrderFinished;
+    public event EventHandler OnDeliverySuccess;
+    public event EventHandler OnDeliveryFailed;
 
     [SerializeField] private RecipeListSO recipeListSO;
     [SerializeField] private float spawnRecipeTimerMax = 4f;
@@ -63,10 +65,13 @@ public class DeliveryManager : MonoBehaviour
                     spawnRecipeAmount--;
                     deliveredOrder++;
                     OnOrderFinished?.Invoke(this, EventArgs.Empty);
-                    break;
+                    OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
+                    return;
                 }
             }
         }
+
+        OnDeliveryFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingRecipeList()
@@ -74,7 +79,8 @@ public class DeliveryManager : MonoBehaviour
         return waitingRecipeList;
     }
 
-    public int GetSuccessfullDeliveredOrderCount() {
+    public int GetSuccessfullDeliveredOrderCount()
+    {
         return deliveredOrder;
     }
 }

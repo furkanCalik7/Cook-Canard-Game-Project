@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class DeliveryCounter : BaseCounter, IKitchenObjectParent
 {
+    public static DeliveryCounter Instance {get; private set;}
+    void Awake() {
+        Instance = this;
+    }
 
     public override void Interact(Player player)
     {

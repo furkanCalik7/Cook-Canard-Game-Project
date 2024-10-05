@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } 
-
+    public static GameManager Instance { get; private set; }
     public event EventHandler<OnGameStateChangedEventArgs> OnGameStateChanged;
+
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnpaused;
     public class OnGameStateChangedEventArgs : EventArgs
     {
         public GameState gameState;
@@ -20,11 +22,11 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     [SerializeField] private float waitingToStartTimerMax = 3f;
     [SerializeField] private float countdownToStartTimerMax = 3f;
-    [SerializeField] private float gamePlayingTimerMax = 15f;
+    [SerializeField] private float gamePlayingTimerMax = 30f;
     private float waitingToStartTimer = 0f;
     private float countdownToStartTimer = 0f;
     private float gamePlayingTimer = 0f;
-
+    private bool isGamePaused = false;
 
     void Awake()
     {
@@ -35,6 +37,16 @@ public class GameManager : MonoBehaviour
         {
             gameState = GameState.WaitingToStart
         });
+    }
+
+    void Start()
+    {
+        GameInput.Instance.OnPauseAction += GameInput_OnPauseActionPerformed;
+    }
+
+    private void GameInput_OnPauseActionPerformed(object sender, EventArgs e)
+    {
+        TooglePauseGame();
     }
 
     void Update()
@@ -54,7 +66,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.CountdownToStart:
-                countdownToStartTimer -= Time.deltaTime;    
+                countdownToStartTimer -= Time.deltaTime;
                 if (countdownToStartTimer < 0)
                 {
                     OnGameStateChanged?.Invoke(this, new OnGameStateChangedEventArgs
@@ -87,11 +99,28 @@ public class GameManager : MonoBehaviour
     {
         return gameState == GameState.GamePlaying;
     }
-    
-    public float GetCountdown() {
+
+    public float GetCountdown()
+    {
         return countdownToStartTimer;
     }
-    public float GetPlayingTimerNormalized() {
+    public float GetPlayingTimerNormalized()
+    {
         return gamePlayingTimer / gamePlayingTimerMax;
+    }
+
+    public void TooglePauseGame()
+    {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused)
+        {
+            Time.timeScale = 0f;
+            Debug.Log("her");
+            OnGamePaused?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+        Debug.Log("test");
+        Time.timeScale = 1f;
+        OnGameUnpaused?.Invoke(this, EventArgs.Empty);
     }
 }

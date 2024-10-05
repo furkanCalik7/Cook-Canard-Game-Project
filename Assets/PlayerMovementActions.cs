@@ -53,6 +53,15 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""16b83fa2-50bf-40fb-9e31-670bc106bd62"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
                     ""action"": ""InteractAlternate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c390697d-33b8-4489-be33-517a399f2192"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_InteractAlternate = m_Player.FindAction("InteractAlternate", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +228,7 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_InteractAlternate;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerMovementActions m_Wrapper;
@@ -214,6 +236,7 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @InteractAlternate => m_Wrapper.m_Player_InteractAlternate;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +255,9 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
             @InteractAlternate.started += instance.OnInteractAlternate;
             @InteractAlternate.performed += instance.OnInteractAlternate;
             @InteractAlternate.canceled += instance.OnInteractAlternate;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -245,6 +271,9 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
             @InteractAlternate.started -= instance.OnInteractAlternate;
             @InteractAlternate.performed -= instance.OnInteractAlternate;
             @InteractAlternate.canceled -= instance.OnInteractAlternate;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -267,5 +296,6 @@ public partial class @PlayerMovementActions: IInputActionCollection2, IDisposabl
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInteractAlternate(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -1,12 +1,17 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IHasProgress
-{
+{   
+    public static event EventHandler OnAnyCut;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOs;
     private int cuttingProgress;
+
+    new public static void ResetStaticData() {
+        OnAnyCut = null;
+    }
     public override void Interact(Player player)
     {
         if (HasKitchenObject())
@@ -55,7 +60,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
         CuttingRecipeSO cuttingRecipeSO = findCuttingRecipe(kitchenObject.GetKitchenObjectsSO());
         if (cuttingRecipeSO == null) return;
         cuttingProgress++;
-
+        
+        OnAnyCut?.Invoke(this, EventArgs.Empty);
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
             progressChanged = (float)cuttingProgress / cuttingRecipeSO.requiredCuttingAction
