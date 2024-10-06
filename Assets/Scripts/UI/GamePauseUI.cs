@@ -6,18 +6,25 @@ public class GamePauseUI : MonoBehaviour
 {
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button optionsButton;
 
     void Awake()
     {
         resumeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.TooglePauseGame();
-        }); 
+        });
 
-        quitButton.onClick.AddListener(() => {
+        optionsButton.onClick.AddListener(() =>
+        {
+            OptionsMenuUI.Instance.Show();
+        });
+
+        quitButton.onClick.AddListener(() =>
+        {
             Loader.Load(Loader.GameScene.MainMenuScene);
-        });Debug.Log("sad");
-        
+        });
+
     }
 
     void Start()
@@ -29,7 +36,6 @@ public class GamePauseUI : MonoBehaviour
 
     private void GameManager_OnGamePaused(object sender, EventArgs e)
     {
-        Debug.Log("her1");
         Show();
     }
 

@@ -92,7 +92,6 @@ public class GameManager : MonoBehaviour
             case GameState.GameOver:
                 break;
         }
-        Debug.Log(gameState);
     }
 
     public bool IsGamePlaying()
@@ -115,11 +114,9 @@ public class GameManager : MonoBehaviour
         if (isGamePaused)
         {
             Time.timeScale = 0f;
-            Debug.Log("her");
             OnGamePaused?.Invoke(this, EventArgs.Empty);
             return;
         }
-        Debug.Log("test");
         Time.timeScale = 1f;
         OnGameUnpaused?.Invoke(this, EventArgs.Empty);
     }

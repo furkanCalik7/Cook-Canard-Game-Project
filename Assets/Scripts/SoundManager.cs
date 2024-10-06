@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance {get; private set;}
+    public static string PLAYER_PERFS_SOUND_VOLUME_LEVEL = "SoundVolumeLevel";
+    public static SoundManager Instance { get; private set; }
     [SerializeField] private AudioClipRefSO audioClipRefSO;
-    void Awake() {
+    private float volume = .3f;
+    void Awake()
+    {
         Instance = this;
+        volume = PlayerPrefs.GetFloat(PLAYER_PERFS_SOUND_VOLUME_LEVEL, volume);
     }
 
     void Start()
@@ -17,7 +21,7 @@ public class SoundManager : MonoBehaviour
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
         Player.Instance.OnObjectPickedup += Player_OnObjectPickedup;
         BaseCounter.OnAnyObjectPlaced += BaseCounter_OnAnyObjectPlaced;
-        TrashCounter.OnAnyObjectTrashed+= TrashCounter_OnAnyObjectTrashed;
+        TrashCounter.OnAnyObjectTrashed += TrashCounter_OnAnyObjectTrashed;
     }
     private void TrashCounter_OnAnyObjectTrashed(object sender, EventArgs e)
     {
@@ -51,11 +55,28 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(audioClips[UnityEngine.Random.Range(0, audioClips.Length)], position, volume);
     }
-    private void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
+    private void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplier = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, volume);
+        AudioSource.PlayClipAtPoint(audioClip, position, volumeMultiplier * volume);
     }
-    public void PlayFootstepSound(Vector3 position, float volume = 1f) {
+    public void PlayFootstepSound(Vector3 position, float volume = 1f)
+    {
         PlaySound(audioClipRefSO.footstep, position, volume);
+    }
+
+    public void ChangeVolume()
+    {
+        volume += 0.1f;
+        if (volume > 1f)
+        {
+            volume = 0f;
+        }
+        PlayerPrefs.SetFloat(PLAYER_PERFS_SOUND_VOLUME_LEVEL, volume);
+        PlayerPrefs.Save();
+    }
+
+    public float GetVolume()
+    {
+        return volume;
     }
 }
